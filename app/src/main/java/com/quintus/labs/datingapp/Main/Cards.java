@@ -40,6 +40,16 @@ public class Cards {
         this.sport = sport;
     }
 
+    public Cards(String userId, String name, int age, String profileImageUrl, String bio, String interest, int distance) {
+        this.userId = userId;
+        this.name = name;
+        this.age = age;
+        this.profileImageUrl = profileImageUrl;
+        this.bio = bio;
+        this.interest = interest;
+        this.distance = distance;
+    }
+
     public Cards(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
     }

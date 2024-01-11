@@ -70,7 +70,6 @@ public class RegisterHobby extends AppCompatActivity {
         Intent intent = getIntent();
         userInfo = (User) intent.getSerializableExtra("classUser");
         password = intent.getStringExtra("password");
-        age = Integer.parseInt(intent.getStringExtra("age"));
 
         initWidgets();
 
@@ -247,19 +246,19 @@ public class RegisterHobby extends AppCompatActivity {
                 String uId = currentUser.getUid();
                 DatabaseReference z = FirebaseDatabase.getInstance().getReference().child("users");
                 z.child(uId).setValue(hashMap);
-                HashMap<String, Boolean> hashMap2 = new HashMap<>();
+//                HashMap<String, Boolean> hashMap2 = new HashMap<>();
                 z.child(uId).child("Travel").setValue(user.isTravel());
                 z.child(uId).child("Sports").setValue(user.isSports());
                 z.child(uId).child("Music").setValue(user.isMusic());
                 z.child(uId).child("Movie").setValue(user.isMovie());
                 z.child(uId).child("Fishing").setValue(user.isFishing());
                 z.child(uId).child("Gaming").setValue(user.isGaming());
-                z.child(uId).child("hobbies").setValue(hashMap2);
+//                z.child(uId).child("hobbies").setValue(hashMap2);
                 z.child(uId).child("AgeFrom").setValue(12);
                 z.child(uId).child("AgeTo").setValue(50);
                 z.child(uId).child("AgeTo").setValue(50);
                 z.child(uId).child("Distance").setValue(20);
-                z.child(uId).child("Age").setValue(age);
+                z.child(uId).child("Age").setValue(user.getAge());
                 Toast.makeText(RegisterHobby.this, "\n" + "Đã đăng ký thành công", Toast.LENGTH_LONG ).show();
                 Intent intent = new Intent(RegisterHobby.this, MainActivity.class);
                 startActivity(intent);

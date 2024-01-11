@@ -31,6 +31,7 @@ public class RegisterAge extends AppCompatActivity {
     private Button ageContinueButton;
     // age limit attribute
     private int ageLimit = 13;
+    private int age;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +58,11 @@ public class RegisterAge extends AppCompatActivity {
     }
 
     public void openHobbiesEntryPage() {
-        int age = getAge(ageSelectionPicker.getYear(), ageSelectionPicker.getMonth(), ageSelectionPicker.getDayOfMonth());
+        age = getAge(ageSelectionPicker.getYear(), ageSelectionPicker.getMonth(), ageSelectionPicker.getDayOfMonth());
 
         // if user is above 13 years old then only he/she will be allowed to register to the system.
         if (age > ageLimit) {
+            user.setAge(age);
             // code for converting date to string
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.YEAR, ageSelectionPicker.getYear());
@@ -75,7 +77,7 @@ public class RegisterAge extends AppCompatActivity {
             Intent intent = new Intent(this, RegisterHobby.class);
             intent.putExtra("password", password);
             intent.putExtra("classUser", user);
-            intent.putExtra("age", age);
+//            intent.putExtra("age", age);
             startActivity(intent);
         } else {
             Toast.makeText(getApplicationContext(), "Age of the user should be greater than " + ageLimit + " !!!", Toast.LENGTH_SHORT).show();

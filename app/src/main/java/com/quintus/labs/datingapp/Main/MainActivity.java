@@ -104,82 +104,82 @@ public class MainActivity extends Activity {
         currentUserId = currentUser.getUid();
         setupTopNavigationView();
         userArrayList = new ArrayList<>();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
-         ValueEventListener eventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                        if(!snapshot.getKey().equals(currentUserId)) {
-                            User user = new User();
-                            user.setUser_id(snapshot.getKey());
-                            user.setName(snapshot.child("Name").getValue().toString());
-                            user.setAge(Integer.parseInt(snapshot.child("Age").getValue().toString()));
-                            user.setImage1(snapshot.child("Image1").getValue().toString());
-                            user.setImage2(snapshot.child("Image2").getValue().toString());
-                            user.setImage3(snapshot.child("Image3").getValue().toString());
-                            user.setStatus(snapshot.child("Status").getValue().toString());
-                            user.setJob(snapshot.child("Job").getValue().toString());
-                            user.setSchool(snapshot.child("School").getValue().toString());
-                            user.setSex(snapshot.child("sex").getValue().toString());
-                            user.setCompany(snapshot.child("Company").getValue().toString());
-                            user.setFishing(Boolean.parseBoolean(snapshot.child("Fishing").getValue().toString()));
-                            user.setMovie(Boolean.parseBoolean(snapshot.child("Movie").getValue().toString()));
-                            user.setMusic(Boolean.parseBoolean(snapshot.child("Music").getValue().toString()));
-                            user.setSports(Boolean.parseBoolean(snapshot.child("Spsort").getValue().toString()));
-                            user.setGaming(Boolean.parseBoolean(snapshot.child("Gaming").getValue().toString()));
-                            user.setTravel(Boolean.parseBoolean(snapshot.child("Travel").getValue().toString()));
-                            userArrayList.add(user);
-                        }
-                        else{
-                            sex = snapshot.child("sex").getValue().toString();
-                        }
+//        mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
+//         ValueEventListener eventListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if(dataSnapshot.exists()){
+//                    for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+//                        if(!snapshot.getKey().equals(currentUserId)) {
+//                            User user = new User();
+//                            user.setUser_id(snapshot.getKey());
+//                            user.setName(snapshot.child("Name").getValue().toString());
+//                            user.setAge(Integer.parseInt(snapshot.child("Age").getValue().toString()));
+//                            user.setImage1(snapshot.child("Image1").getValue().toString());
+//                            user.setImage2(snapshot.child("Image2").getValue().toString());
+//                            user.setImage3(snapshot.child("Image3").getValue().toString());
+//                            user.setStatus(snapshot.child("Status").getValue().toString());
+//                            user.setJob(snapshot.child("Job").getValue().toString());
+//                            user.setSchool(snapshot.child("School").getValue().toString());
+//                            user.setSex(snapshot.child("sex").getValue().toString());
+//                            user.setCompany(snapshot.child("Company").getValue().toString());
+//                            user.setFishing(Boolean.parseBoolean(snapshot.child("Fishing").getValue().toString()));
+//                            user.setMovie(Boolean.parseBoolean(snapshot.child("Movie").getValue().toString()));
+//                            user.setMusic(Boolean.parseBoolean(snapshot.child("Music").getValue().toString()));
+//                            user.setSports(Boolean.parseBoolean(snapshot.child("Spsort").getValue().toString()));
+//                            user.setGaming(Boolean.parseBoolean(snapshot.child("Gaming").getValue().toString()));
+//                            user.setTravel(Boolean.parseBoolean(snapshot.child("Travel").getValue().toString()));
+//                            userArrayList.add(user);
+//                        }
+//                        else{
+//                            sex = snapshot.child("sex").getValue().toString();
+//                        }
+//
+//                    }
+//                }
+//            }
 
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-        mDatabase.addListenerForSingleValueEvent(eventListener);
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        };
+//        mDatabase.addListenerForSingleValueEvent(eventListener);
 
 
         rowItems = new ArrayList<>();
-        for(User user: userArrayList){
-            if(!user.getSex().equals(sex)) {
-                Cards cards = new Cards(user.getUser_id(),
-                        user.getName(),
-                        user.getAge(),
-                        user.getImage1(),
-                        user.getStatus(),
-                        user.getCompany(),
-                        user.getSchool(),
-                        user.getJob(),
-                        user.isMovie(),
-                        user.isFishing(),
-                        user.isTravel(),
-                        user.isSports(),
-                        user.isMusic());
-                rowItems.add(cards);
-            }
-        }
-//        Cards cards = new Cards("1", "Swati Tripathy", 21, "https://im.idiva.com/author/2018/Jul/shivani_chhabra-_author_s_profile.jpg", "Simple and beautiful Girl", "Acting", 200);
-//        rowItems.add(cards);
-//        cards = new Cards("2", "Ananaya Pandy", 20, "https://i0.wp.com/profilepicturesdp.com/wp-content/uploads/2018/06/beautiful-indian-girl-image-for-profile-picture-8.jpg", "cool Minded Girl", "Dancing", 800);
-//        rowItems.add(cards);
-//        cards = new Cards("3", "Anjali Kasyap", 22, "https://pbs.twimg.com/profile_images/967542394898952192/_M_eHegh_400x400.jpg", "Simple and beautiful Girl", "Singing", 400);
-//        rowItems.add(cards);
-//        cards = new Cards("4", "Preety Deshmukh", 19, "http://profilepicturesdp.com/wp-content/uploads/2018/07/fb-real-girls-dp-3.jpg", "dashing girl", "swiming", 1308);
-//        rowItems.add(cards);
-//        cards = new Cards("5", "Srutimayee Sen", 20, "https://dp.profilepics.in/profile_pictures/selfie-girls-profile-pics-dp/selfie-pics-dp-for-whatsapp-facebook-profile-25.jpg", "chulbuli nautankibaj ", "Drawing", 1200);
-//        rowItems.add(cards);
-//        cards = new Cards("6", "Dikshya Agarawal", 21, "https://pbs.twimg.com/profile_images/485824669732200448/Wy__CJwU.jpeg", "Simple and beautiful Girl", "Sleeping", 700);
-//        rowItems.add(cards);
-//        cards = new Cards("7", "Sudeshna Roy", 19, "https://talenthouse-res.cloudinary.com/image/upload/c_fill,f_auto,h_640,w_640/v1411380245/user-415406/submissions/hhb27pgtlp9akxjqlr5w.jpg", "Papa's Pari", "Art", 5000);
-//        rowItems.add(cards);
+//        for(User user: userArrayList){
+//            if(!user.getSex().equals(sex)) {
+//                Cards cards = new Cards(user.getUser_id(),
+//                        user.getName(),
+//                        user.getAge(),
+//                        user.getImage1(),
+//                        user.getStatus(),
+//                        user.getCompany(),
+//                        user.getSchool(),
+//                        user.getJob(),
+//                        user.isMovie(),
+//                        user.isFishing(),
+//                        user.isTravel(),
+//                        user.isSports(),
+//                        user.isMusic());
+//                rowItems.add(cards);
+//            }
+//        }
+        Cards cards = new Cards("1", "Swati Tripathy", 21, "https://im.idiva.com/author/2018/Jul/shivani_chhabra-_author_s_profile.jpg", "Simple and beautiful Girl", "Acting", 200);
+        rowItems.add(cards);
+        cards = new Cards("2", "Ananaya Pandy", 20, "https://i0.wp.com/profilepicturesdp.com/wp-content/uploads/2018/06/beautiful-indian-girl-image-for-profile-picture-8.jpg", "cool Minded Girl", "Dancing", 800);
+        rowItems.add(cards);
+        cards = new Cards("3", "Anjali Kasyap", 22, "https://pbs.twimg.com/profile_images/967542394898952192/_M_eHegh_400x400.jpg", "Simple and beautiful Girl", "Singing", 400);
+        rowItems.add(cards);
+        cards = new Cards("4", "Preety Deshmukh", 19, "http://profilepicturesdp.com/wp-content/uploads/2018/07/fb-real-girls-dp-3.jpg", "dashing girl", "swiming", 1308);
+        rowItems.add(cards);
+        cards = new Cards("5", "Srutimayee Sen", 20, "https://dp.profilepics.in/profile_pictures/selfie-girls-profile-pics-dp/selfie-pics-dp-for-whatsapp-facebook-profile-25.jpg", "chulbuli nautankibaj ", "Drawing", 1200);
+        rowItems.add(cards);
+        cards = new Cards("6", "Dikshya Agarawal", 21, "https://pbs.twimg.com/profile_images/485824669732200448/Wy__CJwU.jpeg", "Simple and beautiful Girl", "Sleeping", 700);
+        rowItems.add(cards);
+        cards = new Cards("7", "Sudeshna Roy", 19, "https://talenthouse-res.cloudinary.com/image/upload/c_fill,f_auto,h_640,w_640/v1411380245/user-415406/submissions/hhb27pgtlp9akxjqlr5w.jpg", "Papa's Pari", "Art", 5000);
+        rowItems.add(cards);
 
         arrayAdapter = new PhotoAdapter(this, R.layout.item, rowItems);
 
