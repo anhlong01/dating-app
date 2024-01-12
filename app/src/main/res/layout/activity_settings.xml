@@ -269,7 +269,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Help &amp; Support"
+                    android:text="Trợ giúp &amp; Hỗ trợ"
                     android:textSize="20dp" />
             </androidx.cardview.widget.CardView>
 
@@ -288,11 +288,12 @@
 
 
                     <TextView
+                        android:id="@+id/shareBtn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="Share"
+                        android:text="Chia sẻ Timo Lover"
                         android:textSize="20dp" />
 
                     <TextView
@@ -323,15 +324,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="10dp"
-                        android:text=" Legal"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:text="Hợp pháp"
+                        android:textColor="@color/black"
                         android:textSize="18dp" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="Licenses"
+                        android:text="Giấy phép"
                         android:textColor="@color/black"
                         android:textSize="20dp" />
 
@@ -339,7 +340,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="Privacy Policy"
+                        android:text="Chính sách bảo mật"
                         android:textColor="@color/black"
                         android:textSize="20dp" />
 
@@ -347,7 +348,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
-                        android:text="Terms of Service"
+                        android:text="Điều khoản dịch vụ"
                         android:textColor="@color/black"
                         android:textSize="20dp" />
 
