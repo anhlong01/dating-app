@@ -5,7 +5,7 @@ android {
     compileSdkVersion 33
     defaultConfig {
         applicationId "com.quintus.labs.datingapp"
-        minSdkVersion 19
+        minSdkVersion 24
         //noinspection ExpiredTargetSdkVersion
         targetSdkVersion 30
         versionCode 1

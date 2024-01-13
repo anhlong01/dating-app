@@ -26,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
@@ -35,6 +36,7 @@ import com.quintus.labs.datingapp.Utils.PulsatorLayout;
 import com.quintus.labs.datingapp.Utils.TopNavigationViewHelper;
 import com.quintus.labs.datingapp.Utils.User;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +66,10 @@ public class MainActivity extends Activity {
     private String currentUserId;
     private String sex;
     private FirebaseUser currentUser;
+    private ArrayList<String> selectedUserId;
+    private DatabaseReference selectedDatabase;
+    private DatabaseReference matchDatabase;
+    private User myUser;
 //    private SwipeFlingAdapterView flingContainer;
 
     @Override
@@ -96,7 +102,20 @@ public class MainActivity extends Activity {
 
         }
     }
+    @Override
+    protected void onStop() {
+        super.onStop();
 
+            FirebaseAuth Auth= FirebaseAuth.getInstance();
+            FirebaseUser currentUser = Auth.getCurrentUser();
+            if (currentUser != null) {
+                String CurrentUID = currentUser.getUid();
+                FirebaseDatabase.getInstance().getReference().child("users").child(CurrentUID).child("Online").setValue(ServerValue.TIMESTAMP);
+                FirebaseDatabase.getInstance().getReference().child("users").child(CurrentUID).child("Seen").setValue("offline");
+            }
+
+
+    }
 //    @Override
 //    protected void onStart() {
 //        super.onStart();
@@ -124,8 +143,9 @@ public class MainActivity extends Activity {
         currentUserId = currentUser.getUid();
         setupTopNavigationView();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
-
-         ValueEventListener eventListener = new ValueEventListener() {
+        matchDatabase = FirebaseDatabase.getInstance().getReference("Match").child(currentUserId);
+        selectedDatabase = FirebaseDatabase.getInstance().getReference().child("Selected").child(currentUserId);
+        ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
@@ -153,7 +173,17 @@ public class MainActivity extends Activity {
                             userArrayList.add(user);
                         }
                         else{
-                            sex = snapshot.child("sex").getValue().toString();
+                            myUser = new User();
+                            myUser.setSex(snapshot.child("sex").getValue().toString());
+                            myUser.setAge(snapshot.child("Age").getValue(Integer.class));
+                            myUser.setFishing(Boolean.parseBoolean(snapshot.child("Fishing").getValue().toString()));
+                            myUser.setMovie(Boolean.parseBoolean(snapshot.child("Movie").getValue().toString()));
+                            myUser.setMusic(Boolean.parseBoolean(snapshot.child("Music").getValue().toString()));
+                            myUser.setSports(Boolean.parseBoolean(snapshot.child("Sports").getValue().toString()));
+                            myUser.setGaming(Boolean.parseBoolean(snapshot.child("Gaming").getValue().toString()));
+                            myUser.setTravel(Boolean.parseBoolean(snapshot.child("Travel").getValue().toString()));
+                            myUser.setAgeFrom(snapshot.child("AgeFrom").getValue(Integer.class));
+                            myUser.setAgeTo(snapshot.child("AgeTo").getValue(Integer.class));
                         }
 
                     }
@@ -168,7 +198,29 @@ public class MainActivity extends Activity {
 
             }
         };
-        mDatabase.addValueEventListener(eventListener);
+        selectedDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                selectedUserId = new ArrayList<>();
+                if(snapshot.exists()){
+                    for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+                        selectedUserId.add(dataSnapshot.getKey());
+                    }
+                    mDatabase.addValueEventListener(eventListener);
+                }else{
+                    mDatabase.addValueEventListener(eventListener);
+                }
+//
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
+//        mDatabase.addValueEventListener(eventListener);
 //        arrayAdapter = new PhotoAdapter(this, R.layout.item, rowItems);
 
 //        rowItems = new ArrayList<>();
@@ -194,14 +246,31 @@ public class MainActivity extends Activity {
 
 
     private void getCards(){
+        for(String id: selectedUserId){
+            userArrayList.removeIf(s -> s.getUser_id().equals(id));
+        }
+
         rowItems = new ArrayList<>();
         arrayAdapter = new PhotoAdapter(this, R.layout.item, rowItems);
         for(User user: userArrayList){
-            if(!user.getSex().equals(sex)) {
+            if((!user.getSex().equals(myUser.getSex())
+                && user.getAge() <= myUser.getAgeTo()
+                && user.getAge() >= myUser.getAgeFrom())
+                && (
+                        ((user.isMusic() && myUser.isMusic())
+                      || (user.isSports() && myUser.isSports())
+                      || (user.isGaming() && myUser.isGaming())
+                      || (user.isMovie() && myUser.isMovie())
+                      || (user.isTravel() && myUser.isTravel())
+                      || (user.isFishing() && myUser.isFishing())
+                    )
+            )) {
                 Cards cards = new Cards(user.getUser_id(),
                         user.getName(),
                         user.getAge(),
                         user.getImage1(),
+                        user.getImage2(),
+                        user.getImage3(),
                         user.getStatus(),
                         user.getCompany(),
                         user.getSchool(),
@@ -275,19 +344,22 @@ public class MainActivity extends Activity {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
                 rowItems.remove(0);
+//                selectedDatabase.child(rowItems.get(0).getUserId()).setValue(rowItems.get(0).getUserId());
                 arrayAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onLeftCardExit(Object dataObject) {
                 Cards obj = (Cards) dataObject;
+                selectedDatabase.child(obj.getUserId()).setValue(obj.getUserId());
                 checkRowItem();
             }
 
             @Override
             public void onRightCardExit(Object dataObject) {
                 Cards obj = (Cards) dataObject;
-
+                matchDatabase.child(obj.getUserId()).setValue(obj.getUserId());
+                selectedDatabase.child(obj.getUserId()).setValue(obj.getUserId());
                 //check matches
                 checkRowItem();
 
@@ -312,7 +384,11 @@ public class MainActivity extends Activity {
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int itemPosition, Object dataObject) {
-                Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_LONG).show();
+                Cards card_item = (Cards)dataObject;
+//                Toast.makeText(getApplicationContext(), "Clicked", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this, ProfileCheckinMain.class);
+                intent.putExtra("card", card_item);
+                mContext.startActivity(intent);
             }
         });
     }

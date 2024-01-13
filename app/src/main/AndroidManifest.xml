@@ -45,6 +45,7 @@
         <activity android:name=".Login.RegisterGender" />
         <activity android:name=".Login.RegisterGenderPrefection" />
         <activity android:name=".Login.RegisterAge" />
+        <activity android:name=".Matched.FriendsChattingActivity" />
         <activity android:name=".Login.RegisterHobby" />
         <activity android:name=".Profile.SettingsActivity" />
         <activity android:name=".Main.BtnLikeActivity" />
