@@ -9,12 +9,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
+
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -42,7 +47,7 @@ public class SettingsActivity extends AppCompatActivity {
     SeekBar distance;
     RangeSeekBar rangeSeekBar;
     TextView gender, distance_text, age_rnge;
-    private TextView logoutBtn, saveBtn;
+    private TextView logoutBtn, saveBtn, shareBtn;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private ProgressDialog mProgressBar;
@@ -66,6 +71,7 @@ public class SettingsActivity extends AppCompatActivity {
         distance_text = findViewById(R.id.distance_text);
         age_rnge = findViewById(R.id.age_range);
         rangeSeekBar = findViewById(R.id.rangeSeekbar);
+        shareBtn = findViewById(R.id.shareBtn);
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -132,7 +138,37 @@ public class SettingsActivity extends AppCompatActivity {
                 save();
             }
         });
+
+        shareBtn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Sự kiện khi bắt đầu chạm
+                        shareBtn.setBackgroundColor(getResources().getColor(R.color.red));
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        // Sự kiện khi ngừng chạm
+                        shareBtn.setBackgroundColor(getResources().getColor(R.color.white));
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        shareBtn.setBackgroundColor(getResources().getColor(R.color.red));
+                        break;
+                    default:
+                        shareBtn.setBackgroundColor(getResources().getColor(R.color.white));
+                }
+                return false;
+            }
+        });
+
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareApp();
+            }
+        });
     }
+
 
     private void Logout(){
         AlertDialog.Builder checkAlert = new AlertDialog.Builder(SettingsActivity.this);
@@ -183,4 +219,33 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void shareApp() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Check out this cool app!\\nDownload the app here: https://drive.google.com/drive/folders/11KbfjGylSBaSUz0kEZ5H0aMMaK76-vwf?usp=drive_link");
+        sendIntent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(sendIntent, null);
+        startActivity(shareIntent);
+    }
+
+
+    //Đổi màu button từ trong ra ngoài
+//    private void animateButtonColor(final Button button) {
+//        int colorFrom = getResources().getColor(R.color.startColor);
+//        int colorTo = getResources().getColor(R.color.endColor);
+//
+//        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+//        colorAnimation.setDuration(1000); // Thời gian của hiệu ứng (milliseconds)
+//
+//        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator animator) {
+//                button.setBackgroundColor((int) animator.getAnimatedValue());
+//            }
+//        });
+//
+//        colorAnimation.start();
+//    }
 }

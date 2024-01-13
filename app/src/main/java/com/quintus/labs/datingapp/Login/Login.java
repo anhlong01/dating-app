@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -91,6 +92,17 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "onClick: navigating to register screen");
                 Intent intent = new Intent(Login.this, RegisterBasicInfo.class);
+                startActivity(intent);
+            }
+        });
+
+
+        LinearLayout layout_forgot_password = findViewById(R.id.layout_forgot_password);
+        layout_forgot_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: navigating to forgot password screen");
+                Intent intent = new Intent(Login.this, ForgotPassword.class);
                 startActivity(intent);
             }
         });
