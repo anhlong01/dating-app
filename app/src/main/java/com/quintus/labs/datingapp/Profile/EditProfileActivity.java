@@ -504,7 +504,7 @@ public class EditProfileActivity extends AppCompatActivity {
         mUserDatabase.child("Job").setValue(job.getText().toString());
         mUserDatabase.child("School").setValue(school.getText().toString());
         mUserDatabase.child("Status").setValue(status.getText().toString());
-        mUserDatabase.child("Company").setValue(status.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+        mUserDatabase.child("Company").setValue(company.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {

@@ -40,6 +40,8 @@ public class User implements Serializable {
     private String status;
     private String job;
 
+
+
     public boolean isMovie() {
         return movie;
     }

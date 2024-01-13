@@ -231,7 +231,7 @@ public class RegisterHobby extends AppCompatActivity {
                 hashMap.put("username", user.getUsername());
                 hashMap.put("image", user.getProfileImageUrl());
                 hashMap.put("sex", user.getSex());
-                hashMap.put("Name", "Johny Dang");
+                hashMap.put("Name",user.getUsername());
                 hashMap.put("Job", "");
                 hashMap.put("School", "");
                 hashMap.put("Status", "");
