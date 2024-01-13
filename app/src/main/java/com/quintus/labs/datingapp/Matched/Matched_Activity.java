@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -66,6 +67,7 @@ public class Matched_Activity extends AppCompatActivity {
     private ArrayList<String> UsersId;
     private ArrayList <Friends>UsersArrayList;
     private ListView UserChatsListView;
+    private ImageButton btnCheckInfoBeforeMatched;
     private DatabaseReference mDatabaseReference;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;

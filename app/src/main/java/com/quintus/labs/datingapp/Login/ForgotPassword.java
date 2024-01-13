@@ -46,6 +46,7 @@ public class ForgotPassword extends AppCompatActivity {
 
         btnSendEmail = findViewById(R.id.btn_send_email_forgot_pass);
         mEmail = findViewById(R.id.input_email_forgot_pass);
+
         btnSendEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
