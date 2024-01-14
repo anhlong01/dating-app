@@ -67,11 +67,11 @@ public class ForgotPassword extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(mContext, "Email sent.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "Đã gửi email.", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(ForgotPassword.this, Login.class);
                             startActivity(intent);
                         } else {
-                            Toast.makeText(mContext, "Email is not registered", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "Email chưa được đăng ký.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

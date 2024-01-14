@@ -15,12 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Grocery App
- * https://github.com/quintuslabs/GroceryStore
- * Created on 18-Feb-2019.
- * Created by : Santosh Kumar Dash:- http://santoshdash.epizy.com
- */
 
 public class RegisterAge extends AppCompatActivity {
 
@@ -80,7 +74,7 @@ public class RegisterAge extends AppCompatActivity {
 //            intent.putExtra("age", age);
             startActivity(intent);
         } else {
-            Toast.makeText(getApplicationContext(), "Age of the user should be greater than " + ageLimit + " !!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Độ tuổi của người dùng phải lớn hơn " + ageLimit + " !!!", Toast.LENGTH_SHORT).show();
         }
 
     }
