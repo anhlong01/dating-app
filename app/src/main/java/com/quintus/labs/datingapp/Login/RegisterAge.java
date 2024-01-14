@@ -74,7 +74,7 @@ public class RegisterAge extends AppCompatActivity {
 //            intent.putExtra("age", age);
             startActivity(intent);
         } else {
-            Toast.makeText(getApplicationContext(), "Age of the user should be greater than " + ageLimit + " !!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Độ tuổi của người dùng phải lớn hơn " + ageLimit + " !!!", Toast.LENGTH_SHORT).show();
         }
 
     }

@@ -65,7 +65,7 @@ public class Login extends AppCompatActivity {
                 String password = mPassword.getText().toString();
 
                 if (isStringNull(email) || isStringNull(password)) {
-                    Toast.makeText(mContext, "You must fill out all the fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Bạn phải điền vào tất cả các ô.", Toast.LENGTH_SHORT).show();
                 } else {
                     mProgressDialog = new ProgressDialog(Login.this);
                     mProgressDialog.setTitle("Đang đăng nhập");
