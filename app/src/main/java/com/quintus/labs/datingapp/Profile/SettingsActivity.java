@@ -1,6 +1,7 @@
 package com.quintus.labs.datingapp.Profile;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -32,8 +34,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.quintus.labs.datingapp.Introduction.IntroductionMain;
+import com.quintus.labs.datingapp.Login.ForgotPassword;
+import com.quintus.labs.datingapp.Login.Login;
 import com.quintus.labs.datingapp.R;
 import com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar;
+
+import java.util.EventListener;
 
 /**
  * Grocery App
@@ -44,10 +50,11 @@ import com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar;
 
 public class SettingsActivity extends AppCompatActivity {
     private static final String TAG = "SettingsActivity";
+    private Context mContext;
     SeekBar distance;
     RangeSeekBar rangeSeekBar;
     TextView gender, distance_text, age_rnge;
-    private TextView logoutBtn, saveBtn, shareBtn;
+    private TextView logoutBtn, saveBtn, shareBtn, changePasswordBtn;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private ProgressDialog mProgressBar;
@@ -57,6 +64,7 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        mContext = SettingsActivity.this;
 
         mAuth = FirebaseAuth.getInstance();
         String curentUserId = mAuth.getUid();
@@ -72,6 +80,9 @@ public class SettingsActivity extends AppCompatActivity {
         age_rnge = findViewById(R.id.age_range);
         rangeSeekBar = findViewById(R.id.rangeSeekbar);
         shareBtn = findViewById(R.id.shareBtn);
+        changePasswordBtn = findViewById(R.id.btnChangePassword);
+
+
 
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -139,24 +150,27 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        changePasswordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: navigating to change password screen");
+                Intent intent = new Intent(SettingsActivity.this, ChangePassword.class);
+                startActivity(intent);
+            }
+        });
+
+        changePasswordBtn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                btnHover(event, changePasswordBtn);
+                return false;
+            }
+        });
+
         shareBtn.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Sự kiện khi bắt đầu chạm
-                        shareBtn.setBackgroundColor(getResources().getColor(R.color.red));
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        // Sự kiện khi ngừng chạm
-                        shareBtn.setBackgroundColor(getResources().getColor(R.color.white));
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        shareBtn.setBackgroundColor(getResources().getColor(R.color.red));
-                        break;
-                    default:
-                        shareBtn.setBackgroundColor(getResources().getColor(R.color.white));
-                }
+                btnHover(event, shareBtn);
                 return false;
             }
         });
@@ -168,6 +182,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
     private void Logout(){
@@ -220,6 +235,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+
     private void shareApp() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
@@ -232,6 +248,24 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     //Đổi màu button từ trong ra ngoài
+    private void btnHover(MotionEvent event, TextView btn) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                // Sự kiện khi bắt đầu chạm
+                btn.setBackgroundColor(getResources().getColor(R.color.red));
+                break;
+            case MotionEvent.ACTION_UP:
+                // Sự kiện khi ngừng chạm
+                btn.setBackgroundColor(getResources().getColor(R.color.white));
+                break;
+            case MotionEvent.ACTION_MOVE:
+                btn.setBackgroundColor(getResources().getColor(R.color.red));
+                break;
+            default:
+                btn.setBackgroundColor(getResources().getColor(R.color.white));
+        }
+    }
+
 //    private void animateButtonColor(final Button button) {
 //        int colorFrom = getResources().getColor(R.color.startColor);
 //        int colorTo = getResources().getColor(R.color.endColor);
