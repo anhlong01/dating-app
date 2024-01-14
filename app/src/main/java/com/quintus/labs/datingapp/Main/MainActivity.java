@@ -76,7 +76,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
 
-
+        setupTopNavigationView();
         cardFrame = findViewById(R.id.card_frame);
         moreFrame = findViewById(R.id.more_frame);
         // start pulsator
@@ -94,17 +94,9 @@ public class MainActivity extends Activity {
 //            flingContainer = findViewById(R.id.frame);
             currentUserId = currentUser.getUid();
 
-            if ( Build.VERSION.SDK_INT >= 23){
-                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) !=
-                        PackageManager.PERMISSION_GRANTED  ){
-                    requestPermissions(new String[]{
-                                    android.Manifest.permission.ACCESS_FINE_LOCATION},
-                            REQUEST_CODE_ASK_PERMISSIONS);
-                    return ;
-                }
-            }
 
-            updateLocation();
+
+//            updateLocation();
             swipeCard();
             String CurrentUID = currentUser.getUid();
             FirebaseDatabase.getInstance().getReference().child("users").child(CurrentUID).child("Online").setValue("true");
@@ -151,7 +143,14 @@ public class MainActivity extends Activity {
 //    }
 
     private void swipeCard(){
-        setupTopNavigationView();
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_CODE_ASK_PERMISSIONS);
+            return;
+        }
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
         matchDatabase = FirebaseDatabase.getInstance().getReference("Match").child(currentUserId);
         selectedDatabase = FirebaseDatabase.getInstance().getReference().child("Selected").child(currentUserId);
@@ -166,8 +165,8 @@ public class MainActivity extends Activity {
                             user.setUser_id(snapshot.getKey());
                             user.setName(snapshot.child("Name").getValue().toString());
                             user.setAge(snapshot.child("Age").getValue(Integer.class));
+                             user.setImage2(snapshot.child("Image2").getValue().toString());
                             user.setImage1(snapshot.child("Image1").getValue().toString());
-                            user.setImage2(snapshot.child("Image2").getValue().toString());
                             user.setImage3(snapshot.child("Image3").getValue().toString());
                             user.setStatus(snapshot.child("Status").getValue().toString());
                             user.setJob(snapshot.child("Job").getValue().toString());

@@ -233,7 +233,7 @@ public class RegisterHobby extends AppCompatActivity {
                 if (user.getSex().equals("male"))
                     hashMap.put("Image1", "https://anh.moe/view/rQFOA");
                 else
-                    hashMap.put("Image1", "https://cdn.anh.moe/c/riDlb.png?wp=1");
+                    hashMap.put("Image1", "https://static.vecteezy.com/system/resources/previews/024/766/960/non_2x/default-female-avatar-profile-icon-social-media-user-free-vector.jpg");
                 hashMap.put("Image2", "");
                 hashMap.put("Image3", "");
                 FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -247,6 +247,8 @@ public class RegisterHobby extends AppCompatActivity {
                 z.child(uId).child("Movie").setValue(user.isMovie());
                 z.child(uId).child("Fishing").setValue(user.isFishing());
                 z.child(uId).child("Gaming").setValue(user.isGaming());
+                z.child(uId).child("latitude").setValue(37.349642);
+                z.child(uId).child("longitude").setValue(-121.938987);
 //                z.child(uId).child("hobbies").setValue(hashMap2);
                 z.child(uId).child("AgeFrom").setValue(12);
                 z.child(uId).child("AgeTo").setValue(50);
