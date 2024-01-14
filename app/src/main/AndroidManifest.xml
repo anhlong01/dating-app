@@ -48,6 +48,7 @@
         <activity android:name=".Matched.FriendsChattingActivity" />
         <activity android:name=".Login.RegisterHobby" />
         <activity android:name=".Profile.SettingsActivity" />
+        <activity android:name=".Profile.ChangePassword" />
         <activity android:name=".Main.BtnLikeActivity" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
