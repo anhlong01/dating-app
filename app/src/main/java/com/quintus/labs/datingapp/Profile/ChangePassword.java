@@ -51,6 +51,9 @@ public class ChangePassword extends AppCompatActivity {
         mContext = ChangePassword.this;
         Log.d(TAG, "onCreate: started");
 
+        TextView toolbar = findViewById(R.id.toolbartag);
+        toolbar.setText("Cài đặt");
+
 
         mPasswordNew = findViewById(R.id.input_password_new);
         mPasswordNew2 = findViewById(R.id.reinput_password_new);

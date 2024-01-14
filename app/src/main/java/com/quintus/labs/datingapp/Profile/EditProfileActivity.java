@@ -56,12 +56,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import com.theartofdev.edmodo.cropper.CropImage;
 
-/**
- * DatingApp
- * https://github.com/quintuslabs/DatingApp
- * Created on 25-sept-2018.
- * Created by : Santosh Kumar Dash:- http://santoshdash.epizy.com
- */
+
 
 public class EditProfileActivity extends AppCompatActivity {
     private static final String TAG = "EditProfileActivity";

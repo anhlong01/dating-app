@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.widget.Toast;
 
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,12 +43,6 @@ import com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar;
 
 import java.util.EventListener;
 
-/**
- * Grocery App
- * https://github.com/quintuslabs/GroceryStore
- * Created on 18-Feb-2019.
- * Created by : Santosh Kumar Dash:- http://santoshdash.epizy.com
- */
 
 public class SettingsActivity extends AppCompatActivity {
     private static final String TAG = "SettingsActivity";
@@ -54,7 +50,7 @@ public class SettingsActivity extends AppCompatActivity {
     SeekBar distance;
     RangeSeekBar rangeSeekBar;
     TextView gender, distance_text, age_rnge;
-    private TextView logoutBtn, saveBtn, shareBtn, changePasswordBtn;
+    private TextView logoutBtn, saveBtn, shareBtn, changePasswordBtn, supportBtn, licenseBtn, securityBtn, serviceBtn;
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
     private ProgressDialog mProgressBar;
@@ -71,7 +67,7 @@ public class SettingsActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(curentUserId);
 
         TextView toolbar = findViewById(R.id.toolbartag);
-        toolbar.setText("Profile");
+        toolbar.setText("Cài đặt");
         ImageButton back = findViewById(R.id.back);
         logoutBtn = findViewById(R.id.logoutBtn);
         saveBtn = findViewById(R.id.saveSettingsBtn);
@@ -81,6 +77,11 @@ public class SettingsActivity extends AppCompatActivity {
         rangeSeekBar = findViewById(R.id.rangeSeekbar);
         shareBtn = findViewById(R.id.shareBtn);
         changePasswordBtn = findViewById(R.id.btnChangePassword);
+        supportBtn = findViewById(R.id.supportBtn);
+        licenseBtn = findViewById(R.id.licenseBtn);
+        securityBtn = findViewById(R.id.securityBtn);
+        serviceBtn = findViewById(R.id.serviceBtn);
+
 
 
 
@@ -181,6 +182,67 @@ public class SettingsActivity extends AppCompatActivity {
                 shareApp();
             }
         });
+
+        supportBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSupportDialog();
+            }
+        });
+
+        supportBtn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                btnHover(event, supportBtn);
+                return false;
+            }
+        });
+
+        licenseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLicenseDialog();
+            }
+        });
+
+        licenseBtn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                btnHover(event, licenseBtn);
+                return false;
+            }
+        });
+
+        securityBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInfoSecurity();
+            }
+        });
+
+        securityBtn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                btnHover(event, securityBtn);
+                return false;
+            }
+        });
+
+        serviceBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInfoService();
+            }
+        });
+
+        serviceBtn.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                btnHover(event, serviceBtn);
+                return false;
+            }
+        });
+
     }
 
 
@@ -236,14 +298,92 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
 
+    private void showSupportDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        // Thiết lập tiêu đề và nội dung của dialog
+        builder.setTitle("Liên hệ hỗ trợ");
+        builder.setMessage("Vui lòng liên hệ admin: dohoanganh444@gmail.com\nHoặc SĐT:000-000-00");
+
+        // Thiết lập nút đồng ý
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Xử lý khi người dùng nhấn OK
+                dialogInterface.dismiss();
+            }
+        });
+
+        // Thiết lập nút hủy
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Xử lý khi người dùng nhấn Hủy
+                dialogInterface.dismiss();
+            }
+        });
+
+        // Tạo và hiển thị dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
     private void shareApp() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "Check out this cool app!\\nDownload the app here: https://drive.google.com/drive/folders/11KbfjGylSBaSUz0kEZ5H0aMMaK76-vwf?usp=drive_link");
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "Check out this cool app!\nDownload the app here: https://drive.google.com/drive/folders/11KbfjGylSBaSUz0kEZ5H0aMMaK76-vwf?usp=drive_link");
         sendIntent.setType("text/plain");
 
         Intent shareIntent = Intent.createChooser(sendIntent, null);
         startActivity(shareIntent);
+    }
+
+    private void showLicenseDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        // Thiết lập tiêu đề và nội dung của dialog
+        builder.setTitle("Giấy phép");
+        builder.setMessage("Giấy phép ứng dụng mã nguồn mở..");
+
+        // Thiết lập nút đồng ý
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Xử lý khi người dùng nhấn OK
+                dialogInterface.dismiss();
+            }
+        });
+
+        // Thiết lập nút hủy
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Xử lý khi người dùng nhấn Hủy
+                dialogInterface.dismiss();
+            }
+        });
+
+        // Tạo và hiển thị dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void showInfoSecurity() {
+        String url = "https://policies.tinder.com/privacy/intl/vi/";
+
+        // Tạo Intent với hành động ACTION_VIEW và Uri của địa chỉ URL
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
+
+    }
+
+    public void showInfoService() {
+        String url = "https://policies.tinder.com/terms/intl/vi/";
+
+        // Tạo Intent với hành động ACTION_VIEW và Uri của địa chỉ URL
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        startActivity(intent);
     }
 
 
