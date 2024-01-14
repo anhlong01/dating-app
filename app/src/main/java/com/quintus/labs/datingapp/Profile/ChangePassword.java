@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class ChangePassword extends AppCompatActivity {
 
     private static final String TAG = "ChangePasswordActivity";
     private Context mContext;
+    private ImageButton back;
     private String passwordNew, passwordNew2;
     private EditText mPasswordNew, mPasswordNew2;
     private TextView loadingPleaseWait;
@@ -53,6 +55,7 @@ public class ChangePassword extends AppCompatActivity {
         mPasswordNew = findViewById(R.id.input_password_new);
         mPasswordNew2 = findViewById(R.id.reinput_password_new);
         changePasswordConfirmBtn = findViewById(R.id.btn_confirm_change_password);
+        back = findViewById(R.id.back);
 
 
         changePasswordConfirmBtn.setOnClickListener(new View.OnClickListener() {
@@ -61,6 +64,13 @@ public class ChangePassword extends AppCompatActivity {
                 if(checkPassword()){
                     changePassword(passwordNew);
                 }
+            }
+        });
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }

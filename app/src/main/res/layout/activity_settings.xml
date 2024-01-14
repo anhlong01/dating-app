@@ -328,7 +328,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="10dp"
-                        android:text="Chia sẻ Timo Lover"
+                        android:text="Chia sẻ Kma Dating"
                         android:textSize="20dp" />
 
                     <TextView
