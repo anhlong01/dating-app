@@ -419,6 +419,8 @@ public class MainActivity extends Activity {
                 mContext.startActivity(intent);
             }
         });
+
+
     }
 
 
@@ -428,7 +430,6 @@ public class MainActivity extends Activity {
         mNotificationHelper.getManager().notify(1, nb.build());
     }
 
-
     public void DislikeBtn(View v) {
         if (rowItems.size() != 0) {
             Cards card_item = rowItems.get(0);
@@ -437,7 +438,7 @@ public class MainActivity extends Activity {
 
             rowItems.remove(0);
             arrayAdapter.notifyDataSetChanged();
-
+            selectedDatabase.child(card_item.getUserId()).setValue(card_item.getUserId());
             Intent btnClick = new Intent(mContext, BtnDislikeActivity.class);
             btnClick.putExtra("url", card_item.getProfileImageUrl());
             startActivity(btnClick);
@@ -454,12 +455,14 @@ public class MainActivity extends Activity {
 
             rowItems.remove(0);
             arrayAdapter.notifyDataSetChanged();
-
+            matchDatabase.child(card_item.getUserId()).setValue(card_item.getUserId());
+            selectedDatabase.child(card_item.getUserId()).setValue(card_item.getUserId());
             Intent btnClick = new Intent(mContext, BtnLikeActivity.class);
             btnClick.putExtra("url", card_item.getProfileImageUrl());
             startActivity(btnClick);
         }
     }
+
 
 
     /**
