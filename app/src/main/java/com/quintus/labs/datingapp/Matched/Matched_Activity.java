@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -72,6 +73,7 @@ public class Matched_Activity extends AppCompatActivity implements SelectListene
     private ArrayList <Friends>UsersArrayList;
     private ArrayList<Friends> UsersArrayList2;
     private ListView UserChatsListView;
+    private ImageButton btnCheckInfoBeforeMatched;
     private DatabaseReference mDatabaseReference;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
