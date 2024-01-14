@@ -9,6 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +35,8 @@ import com.quintus.labs.datingapp.Utils.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * DatingApp
@@ -40,7 +45,7 @@ import java.util.List;
  * Created by : Santosh Kumar Dash:- http://santoshdash.epizy.com
  */
 
-public class Matched_Activity extends AppCompatActivity {
+public class Matched_Activity extends AppCompatActivity implements SelectListener {
 
     private static final String TAG = "Matched_Activity";
     private static final int ACTIVITY_NUM = 2;
@@ -65,6 +70,7 @@ public class Matched_Activity extends AppCompatActivity {
     //my variables
     private ArrayList<String> UsersId;
     private ArrayList <Friends>UsersArrayList;
+    private ArrayList<Friends> UsersArrayList2;
     private ListView UserChatsListView;
     private DatabaseReference mDatabaseReference;
     private FirebaseAuth mAuth;
@@ -84,12 +90,12 @@ public class Matched_Activity extends AppCompatActivity {
         recyclerView = findViewById(R.id.active_recycler_view);
         UserChatsListView= findViewById(R.id.UserChats_ListView_id);
 
-        adapter = new ActiveUserAdapter(usersList, getApplicationContext());
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-        prepareActiveData();
+//        adapter = new ActiveUserAdapter(usersList, getApplicationContext());
+//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+//        recyclerView.setLayoutManager(mLayoutManager);
+//        recyclerView.setItemAnimator(new DefaultItemAnimator());
+//        recyclerView.setAdapter(adapter);
+//        prepareActiveData();
 
 //        mAdapter = new MatchUserAdapter(matchList, getApplicationContext());
 //        RecyclerView.LayoutManager mLayoutManager1 = new LinearLayoutManager(getApplicationContext());
@@ -103,16 +109,17 @@ public class Matched_Activity extends AppCompatActivity {
     }
 
     private void prepareActiveData() {
-        Users users = new Users("1", "Swati Tripathy", 21, "https://im.idiva.com/author/2018/Jul/shivani_chhabra-_author_s_profile.jpg", "Simple and beautiful Girl", "Acting", 200);
-        usersList.add(users);
-        users = new Users("2", "Ananaya Pandy", 20, "https://i0.wp.com/profilepicturesdp.com/wp-content/uploads/2018/06/beautiful-indian-girl-image-for-profile-picture-8.jpg", "cool Minded Girl", "Dancing", 800);
-        usersList.add(users);
-        users = new Users("3", "Anjali Kasyap", 22, "https://pbs.twimg.com/profile_images/967542394898952192/_M_eHegh_400x400.jpg", "Simple and beautiful Girl", "Singing", 400);
-        usersList.add(users);
-        users = new Users("7", "Sudeshna Roy", 19, "https://talenthouse-res.cloudinary.com/image/upload/c_fill,f_auto,h_640,w_640/v1411380245/user-415406/submissions/hhb27pgtlp9akxjqlr5w.jpg", "Papa's Pari", "Art", 5000);
-        usersList.add(users);
 
-        adapter.notifyDataSetChanged();
+//        Users users = new Users("1", "Swati Tripathy", 21, "https://im.idiva.com/author/2018/Jul/shivani_chhabra-_author_s_profile.jpg", "Simple and beautiful Girl", "Acting", 200);
+//        usersList.add(users);
+//        users = new Users("2", "Ananaya Pandy", 20, "https://i0.wp.com/profilepicturesdp.com/wp-content/uploads/2018/06/beautiful-indian-girl-image-for-profile-picture-8.jpg", "cool Minded Girl", "Dancing", 800);
+//        usersList.add(users);
+//        users = new Users("3", "Anjali Kasyap", 22, "https://pbs.twimg.com/profile_images/967542394898952192/_M_eHegh_400x400.jpg", "Simple and beautiful Girl", "Singing", 400);
+//        usersList.add(users);
+//        users = new Users("7", "Sudeshna Roy", 19, "https://talenthouse-res.cloudinary.com/image/upload/c_fill,f_auto,h_640,w_640/v1411380245/user-415406/submissions/hhb27pgtlp9akxjqlr5w.jpg", "Papa's Pari", "Art", 5000);
+//        usersList.add(users);
+
+//        adapter.notifyDataSetChanged();
     }
 
     private void prepareMatchData() {
@@ -165,6 +172,7 @@ public class Matched_Activity extends AppCompatActivity {
                     final FriendsAdapter adapter=new FriendsAdapter(Matched_Activity.this,UsersArrayList);
                     UserChatsListView.setAdapter(adapter);
                     checkTheFriends();
+
                 }
                 else{
                     //to not display any friend because the user doesn't have any friend
@@ -182,7 +190,7 @@ public class Matched_Activity extends AppCompatActivity {
     }
 
     private void searchFunc() {
-       /* search = findViewById(R.id.searchBar);
+        search = findViewById(R.id.searchBar);
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -197,50 +205,51 @@ public class Matched_Activity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 searchText();
             }
-        });*/
+        });
     }
 
-    /* private void searchText() {
+    private void searchText() {
+        final FriendsAdapter adapter=new FriendsAdapter(Matched_Activity.this,UsersArrayList);
+        UserChatsListView.setAdapter(adapter);
+//        UsersArrayList2 = UsersArrayList;
          String text = search.getText().toString().toLowerCase(Locale.getDefault());
          if (text.length() != 0) {
-             if (matchList.size() != 0) {
-                 matchList.clear();
-                 for (User user : copyList) {
-                     if (user.getUsername().toLowerCase(Locale.getDefault()).contains(text)) {
-                         matchList.add(user);
-                     }
-                 }
-             }
+             UsersArrayList = new ArrayList<>(UsersArrayList2);
+//             UsersArrayList.addAll(UsersArrayList2);
+//             UsersArrayList.stream().filter(s -> s.getFriendName().contains(text)).collect(Collectors.toList());
+//             UserChatsListView.clearTextFilter();
+             UsersArrayList.removeIf(s -> !s.getFriendName().toLowerCase().contains(text));
+
          } else {
-             matchList.clear();
-             matchList.addAll(copyList);
+             UsersArrayList = new ArrayList<>(UsersArrayList2);
+//             UsersArrayList.stream().;
+//             UserChatsListView.setFilterText(text);
          }
 
-         mAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
      }
 
-     private boolean checkDup(User user) {
-         if (matchList.size() != 0) {
-             for (User u : matchList) {
-                 if (u.getUsername() == user.getUsername()) {
-                     return true;
-                 }
-             }
-         }
+//     private boolean checkDup(User user) {
+//         if (matchList.size() != 0) {
+//             for (User u : matchList) {
+//                 if (u.getUsername() == user.getUsername()) {
+//                     return true;
+//                 }
+//             }
+//         }
+//
+//         return false;
+//     }
 
-         return false;
-     }
-
-     private void checkClickedItem(int position) {
-
-         User user = matchList.get(position);
-         //calculate distance
-         Intent intent = new Intent(this, ProfileCheckinMatched.class);
-         intent.putExtra("classUser", user);
-
-         startActivity(intent);
-     }
- */
+//     private void checkClickedItem(int position) {
+//
+//         User user = matchList.get(position);
+//         //calculate distance
+//         Intent intent = new Intent(this, ProfileCheckinMatched.class);
+//         intent.putExtra("classUser", user);
+//
+//         startActivity(intent);
+//     }
     private void checkTheFriends(){
         UsersId.clear();
 
@@ -254,6 +263,7 @@ public class Matched_Activity extends AppCompatActivity {
                         UsersId.add(Snapshot.getKey().toString());
                     }
                     sentUserDataToArrayAdapter();
+                    prepareActiveData();
                 }
             }
             @Override
@@ -265,6 +275,11 @@ public class Matched_Activity extends AppCompatActivity {
     private void sentUserDataToArrayAdapter(){
         UsersArrayList.clear();
         final FriendsAdapter adapter=new FriendsAdapter(Matched_Activity.this,UsersArrayList);
+        final ActiveUserAdapter activeAdapter = new ActiveUserAdapter(usersList, getApplicationContext(), this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(activeAdapter);
 
         for(int i=0;i<UsersId.size();i++){
             getFinalMessage(UsersId.get(i));
@@ -277,10 +292,19 @@ public class Matched_Activity extends AppCompatActivity {
                         String name = dataSnapshot.child("Name").getValue().toString();
                         String image = dataSnapshot.child("Image1").getValue().toString();
                         String OnLine = dataSnapshot.child("Online").getValue().toString();
-                        if(OnLine.equals("true"))UsersArrayList.add(new Friends(name,FinalMessage,image,dataSnapshot.getKey(),true));
+                        if(OnLine.equals("true")){
+                            UsersArrayList.add(new Friends(name,FinalMessage,image,dataSnapshot.getKey(),true));
+                            Users user = new Users(dataSnapshot.getKey().toString(), name, image);
+                            usersList.add(user);
+                            activeAdapter.notifyDataSetChanged();
+                        }
                         else UsersArrayList.add(new Friends(name,FinalMessage,image,dataSnapshot.getKey(),false));
                         FinalMessage="";
+                        UsersArrayList2 = new ArrayList<>();
+                        UsersArrayList2.addAll(UsersArrayList);
+                        searchFunc();
                         adapter.notifyDataSetChanged();
+//                        searchFunc();
                     }
                 }
                 @Override
@@ -289,7 +313,9 @@ public class Matched_Activity extends AppCompatActivity {
             m.addListenerForSingleValueEvent(eventListener);
 
         }
+
         UserChatsListView.setAdapter(adapter);
+
 
     }
 
@@ -326,4 +352,12 @@ public class Matched_Activity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onItemClicked(Users user) {
+        Intent intent = new Intent(Matched_Activity.this,FriendsChattingActivity.class);
+        intent.putExtra("User Id",user.getUserId());
+        intent.putExtra("User Name",user.getName());
+        intent.putExtra("User Image",user.getProfileImageUrl());
+        startActivity(intent);
+    }
 }

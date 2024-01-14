@@ -3,6 +3,8 @@ package com.quintus.labs.datingapp.Matched;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +27,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ActiveUserAdapter extends RecyclerView.Adapter<ActiveUserAdapter.MyViewHolder> {
     List<Users> usersList;
     Context context;
-
-    public ActiveUserAdapter(List<Users> usersList, Context context) {
+    private SelectListener selectListener;
+    public ActiveUserAdapter(List<Users> usersList, Context context, SelectListener selectListener) {
         this.usersList = usersList;
         this.context = context;
+        this.selectListener = selectListener;
+//        this.selectListener = selectListener;
     }
 
     @NonNull
@@ -47,6 +51,12 @@ public class ActiveUserAdapter extends RecyclerView.Adapter<ActiveUserAdapter.My
         if (users.getProfileImageUrl() != null) {
             Picasso.get().load(users.getProfileImageUrl()).into(holder.imageView);
         }
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectListener.onItemClicked(users);
+            }
+        });
     }
 
     @Override

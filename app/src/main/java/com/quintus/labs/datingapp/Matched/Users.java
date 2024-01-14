@@ -24,6 +24,12 @@ public class Users {
         this.distance = distance;
     }
 
+    public Users(String userId, String name, String profileImageUrl) {
+        this.userId = userId;
+        this.name = name;
+        this.profileImageUrl = profileImageUrl;
+    }
+
     public Users(String profileImageUrl) {
         this.profileImageUrl = profileImageUrl;
     }

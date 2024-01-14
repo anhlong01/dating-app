@@ -5,6 +5,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -70,6 +73,7 @@ public class MainActivity extends Activity {
     private DatabaseReference selectedDatabase;
     private DatabaseReference matchDatabase;
     private User myUser;
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 //    private SwipeFlingAdapterView flingContainer;
 
     @Override
@@ -94,6 +98,19 @@ public class MainActivity extends Activity {
         }
         else{
 //            flingContainer = findViewById(R.id.frame);
+            currentUserId = currentUser.getUid();
+
+            if ( Build.VERSION.SDK_INT >= 23){
+                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) !=
+                        PackageManager.PERMISSION_GRANTED  ){
+                    requestPermissions(new String[]{
+                                    android.Manifest.permission.ACCESS_FINE_LOCATION},
+                            REQUEST_CODE_ASK_PERMISSIONS);
+                    return ;
+                }
+            }
+
+            updateLocation();
             swipeCard();
             String CurrentUID = currentUser.getUid();
             FirebaseDatabase.getInstance().getReference().child("users").child(CurrentUID).child("Online").setValue("true");
@@ -140,7 +157,6 @@ public class MainActivity extends Activity {
 //    }
 
     private void swipeCard(){
-        currentUserId = currentUser.getUid();
         setupTopNavigationView();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
         matchDatabase = FirebaseDatabase.getInstance().getReference("Match").child(currentUserId);
@@ -170,6 +186,10 @@ public class MainActivity extends Activity {
                             user.setSports(Boolean.parseBoolean(snapshot.child("Sports").getValue().toString()));
                             user.setGaming(Boolean.parseBoolean(snapshot.child("Gaming").getValue().toString()));
                             user.setTravel(Boolean.parseBoolean(snapshot.child("Travel").getValue().toString()));
+                            user.setLatitude(snapshot.child("latitude").getValue(Double.class));
+                            user.setLongtitude(snapshot.child("longitude").getValue(Double.class));
+//                            user.setLatitude(20.979185);
+//                            user.setLongtitude(105.7993016);
                             userArrayList.add(user);
                         }
                         else{
@@ -184,6 +204,9 @@ public class MainActivity extends Activity {
                             myUser.setTravel(Boolean.parseBoolean(snapshot.child("Travel").getValue().toString()));
                             myUser.setAgeFrom(snapshot.child("AgeFrom").getValue(Integer.class));
                             myUser.setAgeTo(snapshot.child("AgeTo").getValue(Integer.class));
+                            myUser.setLongtitude(snapshot.child("longitude").getValue(Double.class));
+                            myUser.setLatitude(snapshot.child("latitude").getValue(Double.class));
+                            myUser.setDistance(snapshot.child("Distance").getValue(Integer.class));
                         }
 
                     }
@@ -249,10 +272,12 @@ public class MainActivity extends Activity {
         for(String id: selectedUserId){
             userArrayList.removeIf(s -> s.getUser_id().equals(id));
         }
-
         rowItems = new ArrayList<>();
         arrayAdapter = new PhotoAdapter(this, R.layout.item, rowItems);
         for(User user: userArrayList){
+            float[] dist = new float[1];
+            Location.distanceBetween(user.getLatitude(), user.getLongtitude(), myUser.getLatitude(), myUser.getLongtitude(), dist);
+            dist[0]/=1000;
             if((!user.getSex().equals(myUser.getSex())
                 && user.getAge() <= myUser.getAgeTo()
                 && user.getAge() >= myUser.getAgeFrom())
@@ -264,7 +289,8 @@ public class MainActivity extends Activity {
                       || (user.isTravel() && myUser.isTravel())
                       || (user.isFishing() && myUser.isFishing())
                     )
-            )) {
+            ) && dist[0] < myUser.getDistance())
+              {
                 Cards cards = new Cards(user.getUser_id(),
                         user.getName(),
                         user.getAge(),
@@ -279,14 +305,13 @@ public class MainActivity extends Activity {
                         user.isFishing(),
                         user.isTravel(),
                         user.isSports(),
-                        user.isMusic());
+                        user.isMusic(),
+                        user.getDistance());
                         rowItems.add(cards);
 
             }
         }
-//        arrayAdapter = new PhotoAdapter(this, R.layout.item, rowItems);
         checkRowItem();
-//        flingContainer.setAdapter(arrayAdapter);
         updateSwipeCard();
 
     }
@@ -309,7 +334,16 @@ public class MainActivity extends Activity {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_LOCATION);
         } else {
+            LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            Location myLocation=locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (myLocation == null)
+            {
+                myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+//                Log.d(TAG, "updateLocation: " + myLocation);
+                FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId).child("longitude").setValue(myLocation.getLongitude());
+                FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId).child("latitude").setValue(myLocation.getLatitude());
 
+            }
         }
     }
 

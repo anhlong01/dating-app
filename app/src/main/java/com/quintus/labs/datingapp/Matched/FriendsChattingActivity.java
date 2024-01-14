@@ -22,6 +22,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Chronometer;
@@ -655,6 +656,7 @@ public class FriendsChattingActivity extends AppCompatActivity {
         View view= inflater.inflate(R.layout.custom_action_bar,null);
         actionBar.setCustomView(view);
 
+
         //************custom action items xml**********************
         custom_UserName=findViewById(R.id.custom_UserName);
         custom_UserOnline=findViewById(R.id.custom_UserOnline);
@@ -662,6 +664,19 @@ public class FriendsChattingActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+
+            default:break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     private void displayUserDataInActionBar(){
 

@@ -25,7 +25,8 @@ public class Cards implements Serializable {
     private boolean sport;
     private boolean music;
 
-    public Cards(String userId, String name, int age, String profileImageUrl, String image2 , String image3,  String status, String company, String school, String job, boolean movie, boolean fishing, boolean travel, boolean sport, boolean music) {
+
+    public Cards(String userId, String name, int age, String profileImageUrl, String image2 , String image3,  String status, String company, String school, String job, boolean movie, boolean fishing, boolean travel, boolean sport, boolean music, int distance) {
         this.userId = userId;
         this.name = name;
         this.age = age;
@@ -42,6 +43,7 @@ public class Cards implements Serializable {
         this.music = music;
         this.travel = travel;
         this.sport = sport;
+        this.distance = distance;
     }
 
     public Cards(String userId, String name, int age, String profileImageUrl, String bio, String interest, int distance) {

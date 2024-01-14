@@ -92,14 +92,21 @@
                     android:textColor="@color/textColor"
                     android:textSize="20sp" />
 
-                <ImageButton
-                    android:id="@+id/checkInfoBeforeMatched"
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:background="@color/white"
-                    android:onClick="checkInfo"
-                    android:src="@drawable/ic_info" />
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:text="Cach"
+                    android:textColor="@color/textColor"
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
