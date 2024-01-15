@@ -150,7 +150,10 @@ public class MainActivity extends Activity {
                             Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_CODE_ASK_PERMISSIONS);
             return;
+        }else{
+            updateLocation();
         }
+//        updateLocation();
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users");
         matchDatabase = FirebaseDatabase.getInstance().getReference("Match").child(currentUserId);
         selectedDatabase = FirebaseDatabase.getInstance().getReference().child("Selected").child(currentUserId);
@@ -267,10 +270,16 @@ public class MainActivity extends Activity {
         }
         rowItems = new ArrayList<>();
         arrayAdapter = new PhotoAdapter(this, R.layout.item, rowItems);
+        Location currentLocation = new Location("currentLocation");
+        currentLocation.setLatitude(myUser.getLatitude());
+        currentLocation.setLongitude(myUser.getLongtitude());
         for(User user: userArrayList){
-            float[] dist = new float[1];
-            Location.distanceBetween(user.getLatitude(), user.getLongtitude(), myUser.getLatitude(), myUser.getLongtitude(), dist);
-            dist[0]/=1000;
+            Location location2 = new Location("location2");
+            location2.setLongitude(user.getLongtitude());
+            location2.setLatitude(user.getLatitude());
+
+            float distance = currentLocation.distanceTo(location2)/1000 ;
+            distance = Math.round(distance*100)/100;
             if((!user.getSex().equals(myUser.getSex())
                 && user.getAge() <= myUser.getAgeTo()
                 && user.getAge() >= myUser.getAgeFrom())
@@ -282,7 +291,7 @@ public class MainActivity extends Activity {
                       || (user.isTravel() && myUser.isTravel())
                       || (user.isFishing() && myUser.isFishing())
                     )
-            ) && dist[0] < myUser.getDistance())
+            ) && distance <= myUser.getDistance())
               {
                 Cards cards = new Cards(user.getUser_id(),
                         user.getName(),
@@ -299,7 +308,7 @@ public class MainActivity extends Activity {
                         user.isTravel(),
                         user.isSports(),
                         user.isMusic(),
-                        user.getDistance());
+                        distance);
                         rowItems.add(cards);
 
             }
@@ -332,11 +341,9 @@ public class MainActivity extends Activity {
             if (myLocation == null)
             {
                 myLocation = locationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-//                Log.d(TAG, "updateLocation: " + myLocation);
-                FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId).child("longitude").setValue(myLocation.getLongitude());
-                FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId).child("latitude").setValue(myLocation.getLatitude());
-
             }
+            FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId).child("longitude").setValue(myLocation.getLongitude());
+            FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId).child("latitude").setValue(myLocation.getLatitude());
         }
     }
 

@@ -8,7 +8,7 @@ public class Cards implements Serializable {
     private String userId;
     private String name, profileImageUrl, bio, interest, image2, image3;
     private int age;
-    private int distance;
+    private float distance;
     private String status;
     private String company;
     private String school;
@@ -20,7 +20,7 @@ public class Cards implements Serializable {
     private boolean music;
 
 
-    public Cards(String userId, String name, int age, String profileImageUrl, String image2 , String image3,  String status, String company, String school, String job, boolean movie, boolean fishing, boolean travel, boolean sport, boolean music, int distance) {
+    public Cards(String userId, String name, int age, String profileImageUrl, String image2 , String image3,  String status, String company, String school, String job, boolean movie, boolean fishing, boolean travel, boolean sport, boolean music, float distance) {
         this.userId = userId;
         this.name = name;
         this.age = age;
@@ -40,7 +40,7 @@ public class Cards implements Serializable {
         this.distance = distance;
     }
 
-    public Cards(String userId, String name, int age, String profileImageUrl, String bio, String interest, int distance) {
+    public Cards(String userId, String name, int age, String profileImageUrl, String bio, String interest, float distance) {
         this.userId = userId;
         this.name = name;
         this.age = age;
@@ -54,7 +54,7 @@ public class Cards implements Serializable {
         this.profileImageUrl = profileImageUrl;
     }
 
-    public int getDistance() {
+    public float getDistance() {
         return distance;
     }
 
