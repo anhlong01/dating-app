@@ -7,7 +7,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -99,6 +102,7 @@ public class FriendsChattingActivity extends AppCompatActivity {
     private ArrayList<Message> chatting_arraylist;
     private static final int GALARY_PICK=1;
     private StorageReference mStorageRef;
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,6 +185,11 @@ public class FriendsChattingActivity extends AppCompatActivity {
         AddRecordBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!checkPermission()){
+                    requestPermissions(new String[]{
+                                    Manifest.permission.RECORD_AUDIO},
+                            REQUEST_CODE_ASK_PERMISSIONS);
+                }
                 mediaPlayer.stop();
                 RecordLin.setVisibility(View.GONE);
 
@@ -191,8 +200,10 @@ public class FriendsChattingActivity extends AppCompatActivity {
                 RecordContainer.setVisibility(View.VISIBLE);
                 RecordTimer.setBase(SystemClock.elapsedRealtime());
                 RecordTimer.start();
+                startRecording();
 
-                if(checkPermission()) startRecording();
+
+
             }
         });
 
@@ -318,8 +329,6 @@ public class FriendsChattingActivity extends AppCompatActivity {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
-
                         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                             @Override
                             public void onCompletion(MediaPlayer mediaPlayer) {

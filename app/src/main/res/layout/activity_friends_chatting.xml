@@ -123,37 +123,36 @@
         android:id="@+id/RecordContainerInList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/SendContainer"
+        android:background="@drawable/button4"
+        android:gravity="center_vertical"
         android:minHeight="40dp"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:background="@drawable/button4"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/SendContainer"
         android:visibility="gone">
 
         <ImageView
             android:id="@+id/PlayOrPauseBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_play_arrow_24"
+            android:layout_marginLeft="10dp"
             android:background="@android:color/transparent"
-            android:layout_marginLeft="10dp"/>
+            android:src="@drawable/ic_baseline_play_arrow_24" />
 
         <SeekBar
             android:id="@+id/SeekBar"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-8dp"/>
+            android:layout_marginLeft="-8dp"
+            android:layout_weight="1" />
 
 
         <ImageView
             android:id="@+id/closeRecord"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_close_24"
+            android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"/>
+            android:src="@drawable/ic_baseline_close_24" />
 
     </LinearLayout>
 

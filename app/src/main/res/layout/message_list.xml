@@ -53,15 +53,14 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_baseline_play_arrow_24"
                 android:background="@android:color/transparent"
-                android:layout_marginLeft="10dp"/>
-
+                android:layout_marginLeft="10dp"
+                />
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/seekbar"
                 android:background="@android:color/transparent"
                 android:layout_marginTop="1dp"/>
-
 
         </LinearLayout>
 
@@ -73,8 +72,8 @@
             android:layout_marginRight="10dp"
             android:textSize="13dp"
             android:layout_marginBottom="2dp"
-            android:gravity="right"/>
-
+            android:gravity="right"
+            />
     </LinearLayout>
 
 
